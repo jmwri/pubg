@@ -1,0 +1,29 @@
+{
+  "name": "jmwri/pubg-php",
+  "description": "A wrapper for the PUBG Tracker API.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jim Wright",
+      "email": "jim@jwright.co"
+    }
+  ],
+  "support": {
+    "email": "jim@jwright.co",
+    "issues": "https://github.com/jmwri/pubg-php/issues",
+    "source": "https://github.com/jmwri/pubg-php",
+    "docs": "https://github.com/jmwri/pubg-php/blob/master/README.md"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "codeclimate/php-test-reporter": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "JmWri\\Pubg\\": "src/"
+    }
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^6.3"
+  }
+}
