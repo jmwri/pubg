@@ -4,6 +4,10 @@ engines:
     config:
       languages:
       - php
+  phpcodesniffer:
+      enabled: true
+  phpmd:
+      enabled: true
 ratings:
   paths:
-  - src/**
+  - "src/**.php"
