@@ -13,5 +13,7 @@
 
 This package is a wrapper around [PUBG Tracker's API](https://pubgtracker.com/site-api).
 
+Please obide by the rate limits specified by PUBG Tracker.
+
 # Support
 https://github.com/jmwri/pubg-php/issues
