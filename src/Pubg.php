@@ -26,7 +26,8 @@ class Pubg
      *
      * @param string $apiKey
      */
-    public function __construct($apiKey) {
+    public function __construct($apiKey)
+    {
         $this->setApiKey($apiKey);
         $this->client = new Client([
             'base_uri' => 'https://pubgtracker.com/api/'
@@ -40,12 +41,13 @@ class Pubg
      */
     public function setApiKey($apiKey)
     {
-        if (! is_string($apiKey)) {
+        if (!is_string($apiKey)) {
             throw new \InvalidArgumentException("The specified API key must be a string: {$apiKey}");
         }
 
         $this->apiKey = $apiKey;
     }
+
     /**
      * @return string
      */
@@ -61,7 +63,7 @@ class Pubg
      * @return mixed
      * @throws PubgException
      */
-    public function request($method, $uri, $params=[])
+    public function request($method, $uri, $params = [])
     {
         try {
             $res = $this->client->request($method, $uri, [
@@ -70,13 +72,13 @@ class Pubg
                 ],
                 'query' => $params
             ]);
-        } catch(GuzzleException $e) {
+        } catch (GuzzleException $e) {
             throw new PubgException($e->getMessage(), $e->getCode());
         }
         if ($res->getStatusCode() != 200) {
             throw new PubgException($res->getBody(), $res->getStatusCode());
         }
-        return json_decode((string) $res->getBody());
+        return json_decode((string)$res->getBody());
     }
 
     /**
