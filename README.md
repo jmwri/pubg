@@ -15,5 +15,12 @@ This package is a wrapper around [PUBG Tracker's API](https://pubgtracker.com/si
 
 Please obide by the rate limits specified by PUBG Tracker.
 
+# Getting started
+## Installation
+    composer require jmwri/pubg-php
+    
+## API key
+You will need to get an API key from [PUBG Tracker](https://pubgtracker.com/site-api).
+
 # Support
 https://github.com/jmwri/pubg-php/issues
