@@ -3,46 +3,58 @@
 namespace JmWri\Pubg\Test;
 
 use JmWri\Pubg\Pubg;
+use Mockery as m;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Psr7\Response;
 
 
 /**
  * Class PubgTest
  * @package JmWri\Pubg\Test
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
  */
 class PubgTest extends BaseTest
 {
-    /**
-     * @var Pubg
-     */
-    protected static $pubg;
-
-    public function setUp()
-    {
-        self::$pubg = $this->getMockBuilder(Pubg::class)
-            ->setConstructorArgs(['test_api_key'])
-            ->setMethods(['getPlayerStats', 'getNickname'])
-            ->getMock();
-        self::$pubg->expects($this->any())
-            ->method('getPlayerStats')
-            ->will($this->returnValueMap([
-                ['test_nickname', json_decode(file_get_contents(__DIR__.'/data/get_player_stats.json'))]
-            ]));
-        self::$pubg->expects($this->any())
-            ->method('getNickname')
-            ->will($this->returnValueMap([
-                [1234567890, json_decode(file_get_contents(__DIR__.'/data/get_nickname.json'))]
-            ]));
-    }
-
     public function testGetPlayerStats()
     {
-        $res = json_encode(self::$pubg->getPlayerStats('test_nickname'));
-        $this->assertJsonStringEqualsJsonFile(__DIR__.'/data/get_player_stats.json', $res);
+        $body = Psr7\stream_for(file_get_contents(__DIR__ . '/data/get_player_stats.json'));
+        $response = new Response(200, ['content-type' => 'application/json'], $body);
+
+        $requestMock = m::mock('overload:GuzzleHttp\Client');
+        $requestMock->shouldReceive('request')
+            ->once()
+            ->with('GET', 'profile/pc/test_nickname', [
+                'headers' => [
+                    'TRN-Api-Key' => 'test_api_key'
+                ],
+                'query' => []
+            ])
+            ->andReturn($response);
+        $pubg = new Pubg('test_api_key');
+        $res = json_encode($pubg->getPlayerStats('test_nickname'));
+        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_player_stats.json', $res);
     }
 
     public function testGetNickname()
     {
-        $res = json_encode(self::$pubg->getNickname(1234567890));
-        $this->assertJsonStringEqualsJsonFile(__DIR__.'/data/get_nickname.json', $res);
+        $body = Psr7\stream_for(file_get_contents(__DIR__ . '/data/get_nickname.json'));
+        $response = new Response(200, ['content-type' => 'application/json'], $body);
+
+        $requestMock = m::mock('overload:GuzzleHttp\Client');
+        $requestMock->shouldReceive('request')
+            ->once()
+            ->with('GET', 'search', [
+                'headers' => [
+                    'TRN-Api-Key' => 'test_api_key'
+                ],
+                'query' => [
+                    'steamId' => 1234567890
+                ]
+            ])
+            ->andReturn($response);
+        $pubg = new Pubg('test_api_key');
+        $res = json_encode($pubg->getNickname(1234567890));
+        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_nickname.json', $res);
     }
 }
