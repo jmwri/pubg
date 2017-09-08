@@ -2,6 +2,7 @@
 
 namespace JmWri\Pubg\Test;
 
+use GuzzleHttp\Exception\BadResponseException;
 use JmWri\Pubg\Pubg;
 use JmWri\Pubg\PubgException;
 use Mockery as m;
@@ -68,6 +69,52 @@ class PubgTest extends BaseTest
                 ]
             ])
             ->andReturn($response);
+        $pubg = new Pubg('test_api_key');
+        $res = json_encode($pubg->getNickname(1234567890));
+        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_nickname.json', $res);
+    }
+
+    public function testHttpCodeError()
+    {
+        $this->expectException(PubgException::class);
+        $response = new Response(500);
+
+        $requestMock = m::mock('overload:GuzzleHttp\Client');
+        $requestMock->shouldReceive('request')
+            ->once()
+            ->with('GET', 'search', [
+                'headers' => [
+                    'TRN-Api-Key' => 'test_api_key'
+                ],
+                'query' => [
+                    'steamId' => 1234567890
+                ]
+            ])
+            ->andReturn($response);
+        $pubg = new Pubg('test_api_key');
+        $res = json_encode($pubg->getNickname(1234567890));
+        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_nickname.json', $res);
+    }
+
+    public function testGuzzleException()
+    {
+        $this->expectException(PubgException::class);
+
+        $mockRequest = new Psr7\Request('test', 'test');
+        $guzzleException = new BadResponseException('error message', $mockRequest);
+
+        $requestMock = m::mock('overload:GuzzleHttp\Client');
+        $requestMock->shouldReceive('request')
+            ->once()
+            ->with('GET', 'search', [
+                'headers' => [
+                    'TRN-Api-Key' => 'test_api_key'
+                ],
+                'query' => [
+                    'steamId' => 1234567890
+                ]
+            ])
+            ->andThrow($guzzleException);
         $pubg = new Pubg('test_api_key');
         $res = json_encode($pubg->getNickname(1234567890));
         $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_nickname.json', $res);
