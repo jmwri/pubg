@@ -9,7 +9,6 @@ use Mockery as m;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Response;
 
-
 /**
  * Class PubgTest
  * @package JmWri\Pubg\Test
@@ -18,6 +17,16 @@ use GuzzleHttp\Psr7\Response;
  */
 class PubgTest extends BaseTest
 {
+    /**
+     * @param string $path
+     * @return Response
+     */
+    public function getFileResponse($path)
+    {
+        $body = Psr7\stream_for(file_get_contents($path));
+        return new Response(200, ['content-type' => 'application/json'], $body);
+    }
+
     public function testSetApiKey()
     {
         $pubg = new Pubg('old_api_key');
@@ -34,8 +43,7 @@ class PubgTest extends BaseTest
 
     public function testGetPlayerStats()
     {
-        $body = Psr7\stream_for(file_get_contents(__DIR__ . '/data/get_player_stats.json'));
-        $response = new Response(200, ['content-type' => 'application/json'], $body);
+        $response = $this->getFileResponse(__DIR__ . '/data/get_player_stats.json');
 
         $requestMock = m::mock('overload:GuzzleHttp\Client');
         $requestMock->shouldReceive('request')
@@ -54,8 +62,7 @@ class PubgTest extends BaseTest
 
     public function testGetNickname()
     {
-        $body = Psr7\stream_for(file_get_contents(__DIR__ . '/data/get_nickname.json'));
-        $response = new Response(200, ['content-type' => 'application/json'], $body);
+        $response = $this->getFileResponse(__DIR__ . '/data/get_nickname.json');
 
         $requestMock = m::mock('overload:GuzzleHttp\Client');
         $requestMock->shouldReceive('request')
