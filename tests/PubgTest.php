@@ -27,6 +27,11 @@ class PubgTest extends BaseTest
         return new Response(200, ['content-type' => 'application/json'], $body);
     }
 
+    public function getGuzzleMock()
+    {
+        return m::mock('overload:GuzzleHttp\Client');
+    }
+
     public function testSetApiKey()
     {
         $pubg = new Pubg('old_api_key');
@@ -45,7 +50,7 @@ class PubgTest extends BaseTest
     {
         $response = $this->getFileResponse(__DIR__ . '/data/get_player_stats.json');
 
-        $requestMock = m::mock('overload:GuzzleHttp\Client');
+        $requestMock = $this->getGuzzleMock();
         $requestMock->shouldReceive('request')
             ->once()
             ->with('GET', 'profile/pc/test_nickname', [
@@ -64,7 +69,7 @@ class PubgTest extends BaseTest
     {
         $response = $this->getFileResponse(__DIR__ . '/data/get_nickname.json');
 
-        $requestMock = m::mock('overload:GuzzleHttp\Client');
+        $requestMock = $this->getGuzzleMock();
         $requestMock->shouldReceive('request')
             ->once()
             ->with('GET', 'search', [
@@ -86,7 +91,7 @@ class PubgTest extends BaseTest
         $this->expectException(PubgException::class);
         $response = new Response(500);
 
-        $requestMock = m::mock('overload:GuzzleHttp\Client');
+        $requestMock = $this->getGuzzleMock();
         $requestMock->shouldReceive('request')
             ->once()
             ->with('GET', 'search', [
@@ -110,7 +115,7 @@ class PubgTest extends BaseTest
         $mockRequest = new Psr7\Request('test', 'test');
         $guzzleException = new BadResponseException('error message', $mockRequest);
 
-        $requestMock = m::mock('overload:GuzzleHttp\Client');
+        $requestMock = $this->getGuzzleMock();
         $requestMock->shouldReceive('request')
             ->once()
             ->with('GET', 'search', [
