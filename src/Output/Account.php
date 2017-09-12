@@ -134,7 +134,7 @@ class Account
      */
     protected function setSteamId($steamId)
     {
-        $this->steamId = (int) $steamId;
+        $this->steamId = (int)$steamId;
     }
 
     /**
@@ -174,7 +174,7 @@ class Account
      */
     public function getInviteAllow()
     {
-        if (! is_bool($this->inviteAllow)) {
+        if (!is_bool($this->inviteAllow)) {
             return false;
         }
         return $this->inviteAllow;
