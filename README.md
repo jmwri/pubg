@@ -23,21 +23,19 @@ Please obide by the rate limits specified by PUBG Tracker.
 You will need to get an API key from [PUBG Tracker](https://pubgtracker.com/site-api).
 
 # Usage
-## Get nickname from Steam ID
+## Get account
+This example is based off of the [test data](tests/data/get_nickname.json).
 ```php
 $pubg = new Pubg('my-api-key');
-$pubg->getNickname($steamId64);
-```
-```json
-{
-  "AccountId": "account.test_account_id",
-  "Nickname": "test_nickname",
-  "AvatarUrl": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/test_avatar.jpg",
-  "SteamId": "1234567890",
-  "SteamName": "test_steam_name",
-  "State": "offline",
-  "InviteAllow": null
-}
+$pubg->getAccount(1234567890);
+$account = $pubg->getAccount(1234567890);
+$account->getAccountId(); // 'account.test_account_id'
+$account->getNickname(); // 'test_nickname'
+$account->getAvatarUrl(); // 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/test_avatar.jpg'
+$account->getSteamId(); // 1234567890
+$account->getSteamName(); // 'test_steam_name'
+$account->getState(); // 'offline'
+$account->getInviteAllow(); // false
 ```
 
 ## Get player stats

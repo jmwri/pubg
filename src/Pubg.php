@@ -4,6 +4,7 @@ namespace JmWri\Pubg;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use JmWri\Pubg\Output\Account;
 
 /**
  * Class Pubg
@@ -78,7 +79,7 @@ class Pubg
         if ($res->getStatusCode() != 200) {
             throw new PubgException($res->getBody(), $res->getStatusCode());
         }
-        return json_decode((string)$res->getBody());
+        return json_decode((string)$res->getBody(), true);
     }
 
     /**
@@ -92,13 +93,13 @@ class Pubg
 
     /**
      * @param int $steamId 64 bit Steam ID
-     * @return mixed
+     * @return Account
      */
-    public function getNickname($steamId)
+    public function getAccount($steamId)
     {
-        return $this->request('GET', "search", [
+        $result = $this->request('GET', "search", [
             'steamId' => $steamId
         ]);
+        return new Account($result);
     }
-
 }

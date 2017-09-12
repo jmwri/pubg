@@ -65,7 +65,7 @@ class PubgTest extends BaseTest
         $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_player_stats.json', $res);
     }
 
-    public function testGetNickname()
+    public function testGetAccount()
     {
         $response = $this->getFileResponse(__DIR__ . '/data/get_nickname.json');
 
@@ -82,8 +82,17 @@ class PubgTest extends BaseTest
             ])
             ->andReturn($response);
         $pubg = new Pubg('test_api_key');
-        $res = json_encode($pubg->getNickname(1234567890));
-        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_nickname.json', $res);
+        $account = $pubg->getAccount(1234567890);
+        $this->assertEquals('account.test_account_id', $account->getAccountId());
+        $this->assertEquals('test_nickname', $account->getNickname());
+        $this->assertEquals(
+            'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/test_avatar.jpg',
+            $account->getAvatarUrl()
+        );
+        $this->assertEquals(1234567890, $account->getSteamId());
+        $this->assertEquals('test_steam_name', $account->getSteamName());
+        $this->assertEquals('offline', $account->getState());
+        $this->assertEquals(false, $account->getInviteAllow());
     }
 
     public function testHttpCodeError()
@@ -104,8 +113,7 @@ class PubgTest extends BaseTest
             ])
             ->andReturn($response);
         $pubg = new Pubg('test_api_key');
-        $res = json_encode($pubg->getNickname(1234567890));
-        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_nickname.json', $res);
+        $pubg->getAccount(1234567890);
     }
 
     public function testGuzzleException()
@@ -128,7 +136,6 @@ class PubgTest extends BaseTest
             ])
             ->andThrow($guzzleException);
         $pubg = new Pubg('test_api_key');
-        $res = json_encode($pubg->getNickname(1234567890));
-        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_nickname.json', $res);
+        $pubg->getAccount(1234567890);
     }
 }
