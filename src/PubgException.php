@@ -2,7 +2,6 @@
 
 namespace JmWri\Pubg;
 
-
 /**
  * Class PubgException
  * @package JmWri\AmazonWishlist
