@@ -35,8 +35,9 @@ This is trimmed output. See [get_player_stats.json](tests/data/get_player_stats.
 ```php
 $pubg = new Pubg('my-api-key');
 $report = $pubg->getPlayerStats('test_nickname'); // \Jmwri\Pubg\Output\Stats\Report
-$stats = $report->getStats(); // \Jmwri\Pubg\Output\Stats\Stats
-$stats->getStats(); // \Jmwri\Pubg\Output\Stats\Stat[]
+$report->getStats('eu', 'solo'); // \Jmwri\Pubg\Output\Stats\Stat[]
+$report->getStats('eu', ['solo', 'duo']); // \Jmwri\Pubg\Output\Stats\Stat[]
+$report->getStats(['eu', 'na'], 'duo'); // \Jmwri\Pubg\Output\Stats\Stat[]
 $report->getMatchHistory(); // \Jmwri\Pubg\Output\Stats\MatchHistory[]
 ```
 

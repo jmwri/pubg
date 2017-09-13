@@ -6,7 +6,7 @@ use JmWri\Pubg\Output\Account;
 use JmWri\Pubg\Output\Stats\MatchHistory;
 use JmWri\Pubg\Output\Stats\Report;
 use JmWri\Pubg\Output\Stats\Stat;
-use JmWri\Pubg\Output\Stats\Stats;
+use JmWri\Pubg\Output\Stats\RegionModeStats;
 
 class DataFactory
 {
@@ -44,7 +44,7 @@ class DataFactory
                     'percentile' => 91.0,
                     'displayValue' => '1,181',
                 ];
-            case Stats::class:
+            case RegionModeStats::class:
                 return [
                     'Region' => 'eu' . $extraStr,
                     'Season' => '2017-pre4' . $extraStr,
@@ -61,7 +61,7 @@ class DataFactory
                     'LastUpdated' => '2017-09-06T07:01:27.0034291Z',
                     'PlayerName' => 'test_nickname' . $extraStr,
                     'PubgTrackerId' => 1139990,
-                    'Stats' => $this->getNTestData(Stats::class, 3),
+                    'Stats' => $this->getNTestData(RegionModeStats::class, 3),
                     'MatchHistory' => $this->getNTestData(MatchHistory::class, 3),
                 ];
             case MatchHistory::class:

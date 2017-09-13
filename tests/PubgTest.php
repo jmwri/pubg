@@ -73,7 +73,7 @@ class PubgTest extends BaseTest
         $this->assertEquals('Early Access Season #4', $stats->getSeasonDisplay());
         $this->assertEquals('2017-09-06 07:01:27', $stats->getLastUpdated()->format('Y-m-d H:i:s'));
         $this->assertEquals(1139990, $stats->getTrackerId());
-        $this->assertCount(4, $stats->getStats());
+        $this->assertCount(4, $stats->getRegionModeStats());
     }
 
     public function testGetAccount()

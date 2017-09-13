@@ -36,7 +36,24 @@ class ReportTest extends BaseTest
         $this->assertEquals('2017-09-06 07:01:27', $this->report->getLastUpdated()->format('Y-m-d H:i:s'));
         $this->assertEquals('test_nickname', $this->report->getNickname());
         $this->assertEquals(1139990, $this->report->getTrackerId());
-        $this->assertCount(3, $this->report->getStats());
+        $this->assertCount(3, $this->report->getRegionModeStats());
         $this->assertCount(3, $this->report->getMatchHistory());
+    }
+
+    public function testLimitedRegionModeStats()
+    {
+        $this->assertCount(2, $this->report->getRegionModeStats(['eu1', 'eu2']));
+        $this->assertCount(2, $this->report->getRegionModeStats(null, ['solo1', 'solo2']));
+        $this->assertCount(1, $this->report->getRegionModeStats('eu1', ['solo1', 'solo2']));
+        $this->assertCount(1, $this->report->getRegionModeStats(['eu1', 'eu2'], 'solo1'));
+    }
+
+    public function testGetStats()
+    {
+        $this->assertCount(9, $this->report->getStats());
+        $this->assertCount(6, $this->report->getStats(['eu1', 'eu2']));
+        $this->assertCount(6, $this->report->getStats(null, ['solo1', 'solo2']));
+        $this->assertCount(6, $this->report->getStats(['eu1', 'eu2'], ['solo1', 'solo2']));
+        $this->assertCount(0, $this->report->getStats(['eu1'], ['solo2']));
     }
 }

@@ -2,7 +2,7 @@
 
 namespace JmWri\Pubg\Test\Output\Stats;
 
-use JmWri\Pubg\Output\Stats\Stats;
+use JmWri\Pubg\Output\Stats\RegionModeStats;
 use JmWri\Pubg\Test\BaseTest;
 use JmWri\Pubg\Test\DataFactory;
 
@@ -15,15 +15,15 @@ use JmWri\Pubg\Test\DataFactory;
 class StatsTest extends BaseTest
 {
     /**
-     * @var Stats
+     * @var RegionModeStats
      */
     protected $stats;
 
     public function setUp()
     {
         $dataFactory = new DataFactory();
-        $data = $dataFactory->getTestData(Stats::class);
-        $this->stats = new Stats($data);
+        $data = $dataFactory->getTestData(RegionModeStats::class);
+        $this->stats = new RegionModeStats($data);
     }
 
     public function testDataIsSet()

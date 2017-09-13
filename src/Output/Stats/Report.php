@@ -49,9 +49,9 @@ class Report
     protected $trackerId;
 
     /**
-     * @var Stats[]
+     * @var RegionModeStats[]
      */
-    protected $stats;
+    protected $regionModeStats;
 
     /**
      * @var MatchHistory[]
@@ -77,7 +77,7 @@ class Report
         $this->setTrackerId($data['PubgTrackerId']);
 
         foreach ($data['Stats'] as $stats) {
-            $this->appendStats(new Stats($stats));
+            $this->appendStats(new RegionModeStats($stats));
         }
 
         foreach ($data['MatchHistory'] as $matchHistory) {
@@ -214,19 +214,37 @@ class Report
     }
 
     /**
-     * @return Stats[]
+     * @param null|string|string[] $region
+     * @param null|string|string[] $mode
+     * @return RegionModeStats[]
      */
-    public function getStats()
+    public function getRegionModeStats($region = null, $mode = null)
     {
-        return $this->stats;
+        if (!is_array($region) && !is_null($region)) {
+            $region = [$region];
+        }
+        if (!is_array($mode) && !is_null($mode)) {
+            $mode = [$mode];
+        }
+        $regionModeStats = [];
+        foreach ($this->regionModeStats as $regionModeStat) {
+            if (! is_null($region) && !in_array($regionModeStat->getRegion(), $region)) {
+                continue;
+            }
+            if (! is_null($mode) && !in_array($regionModeStat->getMatch(), $mode)) {
+                continue;
+            }
+            $regionModeStats[] = $regionModeStat;
+        }
+        return $regionModeStats;
     }
 
     /**
-     * @param Stats $stats
+     * @param RegionModeStats $stats
      */
     protected function appendStats($stats)
     {
-        $this->stats[] = $stats;
+        $this->regionModeStats[] = $stats;
     }
 
     /**
@@ -243,5 +261,20 @@ class Report
     protected function appendMatchHistory($matchHistory)
     {
         $this->matchHistory[] = $matchHistory;
+    }
+
+    /**
+     * @param null|string $region
+     * @param null|string $mode
+     * @return array
+     */
+    public function getStats($region = null, $mode = null)
+    {
+        $stats = [];
+        $regionModeStats = $this->getRegionModeStats($region, $mode);
+        foreach ($regionModeStats as $regionModeStat) {
+            $stats = array_merge($stats, $regionModeStat->getStats());
+        }
+        return $stats;
     }
 }

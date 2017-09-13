@@ -3,10 +3,10 @@
 namespace JmWri\Pubg\Output\Stats;
 
 /**
- * Class Stats
+ * Class RegionModeStats
  * @package JmWri\Pubg\Output\Stats
  */
-class Stats
+class RegionModeStats
 {
     /**
      * @var string
