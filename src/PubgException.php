@@ -4,7 +4,7 @@ namespace JmWri\Pubg;
 
 /**
  * Class PubgException
- * @package JmWri\AmazonWishlist
+ * @package JmWri\Pubg
  */
 class PubgException extends \Exception
 {
