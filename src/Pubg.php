@@ -5,6 +5,7 @@ namespace JmWri\Pubg;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use JmWri\Pubg\Output\Account;
+use JmWri\Pubg\Output\Stats\Report;
 
 /**
  * Class Pubg
@@ -84,11 +85,12 @@ class Pubg
 
     /**
      * @param string $nickname
-     * @return mixed
+     * @return Report
      */
     public function getPlayerStats($nickname)
     {
-        return $this->request('GET', "profile/pc/{$nickname}");
+        $result = $this->request('GET', "profile/pc/{$nickname}");
+        return new Report($result);
     }
 
     /**

@@ -9,11 +9,6 @@ namespace JmWri\Pubg\Output;
 class Account
 {
     /**
-     * @var []
-     */
-    protected $data;
-
-    /**
      * @var string
      */
     protected $accountId;
@@ -55,22 +50,13 @@ class Account
      */
     public function __construct($data)
     {
-        $this->setData($data);
-        $this->setAccountId($this->data['AccountId']);
-        $this->setNickname($this->data['Nickname']);
-        $this->setAvatarUrl($this->data['AvatarUrl']);
-        $this->setSteamId($this->data['SteamId']);
-        $this->setSteamName($this->data['SteamName']);
-        $this->setState($this->data['State']);
-        $this->setInviteAllow($this->data['InviteAllow']);
-    }
-
-    /**
-     * @param [] $data
-     */
-    protected function setData($data)
-    {
-        $this->data = $data;
+        $this->setAccountId($data['AccountId']);
+        $this->setNickname($data['Nickname']);
+        $this->setAvatarUrl($data['AvatarUrl']);
+        $this->setSteamId($data['SteamId']);
+        $this->setSteamName($data['SteamName']);
+        $this->setState($data['State']);
+        $this->setInviteAllow($data['InviteAllow']);
     }
 
     /**

@@ -61,8 +61,19 @@ class PubgTest extends BaseTest
             ])
             ->andReturn($response);
         $pubg = new Pubg('test_api_key');
-        $res = json_encode($pubg->getPlayerStats('test_nickname'));
-        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/data/get_player_stats.json', $res);
+        $stats = $pubg->getPlayerStats('test_nickname');
+        $this->assertEquals('account.test_account_id', $stats->getAccountId());
+        $this->assertEquals('test_nickname', $stats->getNickname());
+        $this->assertEquals(
+            'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/test_avatar.jpg',
+            $stats->getAvatarUrl()
+        );
+        $this->assertEquals('eu', $stats->getSelectedRegion());
+        $this->assertEquals('2017-pre4', $stats->getDefaultSeason());
+        $this->assertEquals('Early Access Season #4', $stats->getSeasonDisplay());
+        $this->assertEquals('2017-09-06 07:01:27', $stats->getLastUpdated()->format('Y-m-d H:i:s'));
+        $this->assertEquals(1139990, $stats->getTrackerId());
+        $this->assertCount(4, $stats->getStats());
     }
 
     public function testGetAccount()
