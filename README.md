@@ -24,14 +24,12 @@ You will need to get an API key from [PUBG Tracker](https://pubgtracker.com/site
 
 # Usage
 ## Get account
-This example is based off of the [test data](tests/data/get_nickname.json).
 ```php
 $pubg = new Pubg('my-api-key');
 $pubg->getAccount(1234567890); // \Jmwri\Pubg\Output\Account
 ```
 
 ## Get player stats
-This is trimmed output. See [get_player_stats.json](tests/data/get_player_stats.json) for full output.
 ```php
 $pubg = new Pubg('my-api-key');
 $report = $pubg->getPlayerStats('test_nickname'); // \Jmwri\Pubg\Output\Stats\Report
