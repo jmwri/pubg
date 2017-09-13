@@ -103,7 +103,7 @@ class PubgTest extends BaseTest
         $this->assertEquals(1234567890, $account->getSteamId());
         $this->assertEquals('test_steam_name', $account->getSteamName());
         $this->assertEquals('offline', $account->getState());
-        $this->assertEquals(false, $account->getInviteAllow());
+        $this->assertEquals(false, $account->isInviteAllowed());
     }
 
     public function testHttpCodeError()

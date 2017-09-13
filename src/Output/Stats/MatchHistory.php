@@ -96,7 +96,7 @@ class MatchHistory
     /**
      * @var float
      */
-    protected $kd;
+    protected $kdRatio;
 
     /**
      * @var int
@@ -178,7 +178,7 @@ class MatchHistory
         $this->setRatingRank($data['RatingRank']);
         $this->setRatingRankChange($data['RatingRankChange']);
         $this->setHeadShots($data['Headshots']);
-        $this->setKd($data['Kd']);
+        $this->setKdRatio($data['Kd']);
         $this->setDamage($data['Damage']);
         $this->setTimeSurvived($data['TimeSurvived']);
         $this->setWinRating($data['WinRating']);
@@ -467,17 +467,17 @@ class MatchHistory
     /**
      * @return float
      */
-    public function getKd()
+    public function getKdRatio()
     {
-        return $this->kd;
+        return $this->kdRatio;
     }
 
     /**
-     * @param float $kd
+     * @param float $kdRatio
      */
-    protected function setKd($kd)
+    protected function setKdRatio($kdRatio)
     {
-        $this->kd = $kd;
+        $this->kdRatio = $kdRatio;
     }
 
     /**

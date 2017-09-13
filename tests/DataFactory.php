@@ -12,14 +12,14 @@ class DataFactory
 {
     /**
      * @param string $cls
-     * @param null|int $n
+     * @param null|int $amount
      * @return array
      */
-    public function getTestData($cls, $n = null)
+    public function getTestData($cls, $amount = null)
     {
         $extraStr = '';
-        if (!is_null($n)) {
-            $extraStr = "{$n}";
+        if (!is_null($amount)) {
+            $extraStr = "{$amount}";
         }
         switch ($cls) {
             case Account::class:
@@ -48,7 +48,7 @@ class DataFactory
                 return [
                     'Region' => 'eu' . $extraStr,
                     'Season' => '2017-pre4' . $extraStr,
-                    'Match'=> 'solo' . $extraStr,
+                    'Match' => 'solo' . $extraStr,
                     'Stats' => $this->getNTestData(Stat::class, 3),
                 ];
             case Report::class:
@@ -104,13 +104,13 @@ class DataFactory
 
     /**
      * @param string $cls
-     * @param int $n
+     * @param int $amount
      * @return array
      */
-    public function getNTestData($cls, $n)
+    public function getNTestData($cls, $amount)
     {
         $res = [];
-        for ($i = 1; $i <= $n; $i++) {
+        for ($i = 1; $i <= $amount; $i++) {
             $res[] = $this->getTestData($cls, $i);
         }
         return $res;

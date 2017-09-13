@@ -45,7 +45,7 @@ class MatchHistoryTest extends BaseTest
         $this->assertEquals(256368, $this->matchHistory->getRatingRank());
         $this->assertEquals(256368, $this->matchHistory->getRatingRankChange());
         $this->assertEquals(0, $this->matchHistory->getHeadShots());
-        $this->assertEquals(0.5, $this->matchHistory->getKd());
+        $this->assertEquals(0.5, $this->matchHistory->getKdRatio());
         $this->assertEquals(463, $this->matchHistory->getDamage());
         $this->assertEquals(4333.51, $this->matchHistory->getTimeSurvived());
         $this->assertEquals(1063, $this->matchHistory->getWinRating());

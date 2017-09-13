@@ -158,7 +158,7 @@ class Account
     /**
      * @return bool
      */
-    public function getInviteAllow()
+    public function isInviteAllowed()
     {
         if (!is_bool($this->inviteAllow)) {
             return false;

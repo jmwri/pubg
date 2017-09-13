@@ -34,6 +34,6 @@ class AccountTest extends BaseTest
         $this->assertEquals(1234, $this->account->getSteamId());
         $this->assertEquals('test_steam_name', $this->account->getSteamName());
         $this->assertEquals('test_state', $this->account->getState());
-        $this->assertTrue($this->account->getInviteAllow());
+        $this->assertTrue($this->account->isInviteAllowed());
     }
 }

@@ -214,18 +214,26 @@ class Report
     }
 
     /**
+     * @param mixed $item
+     * @return array
+     */
+    protected function toArray($item)
+    {
+        if (!is_array($item) && !is_null($item)) {
+            return [$item];
+        }
+        return $item;
+    }
+
+    /**
      * @param null|string|string[] $region
      * @param null|string|string[] $mode
      * @return RegionModeStats[]
      */
     public function getRegionModeStats($region = null, $mode = null)
     {
-        if (!is_array($region) && !is_null($region)) {
-            $region = [$region];
-        }
-        if (!is_array($mode) && !is_null($mode)) {
-            $mode = [$mode];
-        }
+        $region = $this->toArray($region);
+        $mode = $this->toArray($mode);
         $regionModeStats = [];
         foreach ($this->regionModeStats as $regionModeStat) {
             if (! is_null($region) && !in_array($regionModeStat->getRegion(), $region)) {
