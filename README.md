@@ -25,13 +25,13 @@ You will need to get an API key from [PUBG Tracker](https://pubgtracker.com/site
 # Usage
 ## Get account
 ```php
-$pubg = new Pubg('my-api-key');
+$pubg = new \Jmwri\Pubg\Pubg('my-api-key');
 $pubg->getAccount(1234567890); // \Jmwri\Pubg\Output\Account
 ```
 
 ## Get player stats
 ```php
-$pubg = new Pubg('my-api-key');
+$pubg = new \Jmwri\Pubg\Pubg('my-api-key');
 $report = $pubg->getPlayerStats('test_nickname'); // \Jmwri\Pubg\Output\Stats\Report
 $report->getStats('eu', 'solo'); // \Jmwri\Pubg\Output\Stats\Stat[]
 $report->getStats('eu', ['solo', 'duo']); // \Jmwri\Pubg\Output\Stats\Stat[]
