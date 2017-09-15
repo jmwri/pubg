@@ -19,12 +19,14 @@ class PubgTest extends BaseTest
 {
     /**
      * @param string $path
+     * @param int $status
+     * @param string $contentType
      * @return Response
      */
-    public function getFileResponse($path)
+    public function getFileResponse($path, $status = 200, $contentType = 'application/json')
     {
         $body = Psr7\stream_for(file_get_contents($path));
-        return new Response(200, ['content-type' => 'application/json'], $body);
+        return new Response($status, ['Content-Type' => $contentType], $body);
     }
 
     public function getGuzzleMock()
@@ -74,6 +76,27 @@ class PubgTest extends BaseTest
         $this->assertEquals('2017-09-06 07:01:27', $stats->getLastUpdated()->format('Y-m-d H:i:s'));
         $this->assertEquals(1139990, $stats->getTrackerId());
         $this->assertCount(4, $stats->getRegionModeStats());
+        m::close();
+    }
+
+    public function testGetPlayerStatsNoPlayer()
+    {
+        $this->expectException(PubgException::class);
+        $response = $this->getFileResponse(__DIR__ . '/data/get_player_stats_no_player.json');
+
+        $requestMock = $this->getGuzzleMock();
+        $requestMock->shouldReceive('request')
+            ->once()
+            ->with('GET', 'profile/pc/hopefully_not_exist', [
+                'headers' => [
+                    'TRN-Api-Key' => 'test_api_key'
+                ],
+                'query' => []
+            ])
+            ->andReturn($response);
+        $pubg = new Pubg('test_api_key');
+        $pubg->getPlayerStats('hopefully_not_exist');
+        m::close();
     }
 
     public function testGetAccount()
@@ -104,12 +127,13 @@ class PubgTest extends BaseTest
         $this->assertEquals('test_steam_name', $account->getSteamName());
         $this->assertEquals('offline', $account->getState());
         $this->assertEquals(false, $account->isInviteAllowed());
+        m::close();
     }
 
-    public function testHttpCodeError()
+    public function testGetAccountNoAccount()
     {
-        $this->expectException(PubgException::class);
-        $response = new Response(500);
+        $this->expectException(\JmWri\Pubg\BadResponseException::class);
+        $response = $this->getFileResponse(__DIR__ . '/data/html_reponse.html', 200, 'text/html');
 
         $requestMock = $this->getGuzzleMock();
         $requestMock->shouldReceive('request')
@@ -125,6 +149,73 @@ class PubgTest extends BaseTest
             ->andReturn($response);
         $pubg = new Pubg('test_api_key');
         $pubg->getAccount(1234567890);
+        m::close();
+    }
+
+    public function testHttpCodeError()
+    {
+        $this->expectException(PubgException::class);
+        $response = new Response(500, ['Content-Type' => 'application/json'], 'Something terrible happened.');
+
+        $requestMock = $this->getGuzzleMock();
+        $requestMock->shouldReceive('request')
+            ->once()
+            ->with('GET', 'search', [
+                'headers' => [
+                    'TRN-Api-Key' => 'test_api_key'
+                ],
+                'query' => [
+                    'steamId' => 1234567890
+                ]
+            ])
+            ->andReturn($response);
+        $pubg = new Pubg('test_api_key');
+        $pubg->getAccount(1234567890);
+        m::close();
+    }
+
+    public function testHttpCodeErrorWithJsonBody()
+    {
+        $this->expectException(PubgException::class);
+        $response = $this->getFileResponse(__DIR__ . '/data/http_error_with_json_body.json', 500);
+
+        $requestMock = $this->getGuzzleMock();
+        $requestMock->shouldReceive('request')
+            ->once()
+            ->with('GET', 'search', [
+                'headers' => [
+                    'TRN-Api-Key' => 'test_api_key'
+                ],
+                'query' => [
+                    'steamId' => 1234567890
+                ]
+            ])
+            ->andReturn($response);
+        $pubg = new Pubg('test_api_key');
+        $pubg->getAccount(1234567890);
+        m::close();
+    }
+
+    public function testHttpCodeErrorWithUncommonJsonBody()
+    {
+        $this->expectException(PubgException::class);
+        $response = $this->getFileResponse(__DIR__ . '/data/http_error_with_uncommon_json_body.json', 200);
+
+        $requestMock = $this->getGuzzleMock();
+        $requestMock->shouldReceive('request')
+            ->once()
+            ->with('GET', 'search', [
+                'headers' => [
+                    'TRN-Api-Key' => 'test_api_key'
+                ],
+                'query' => [
+                    'steamId' => 1234567890
+                ]
+            ])
+            ->andReturn($response);
+        $pubg = new Pubg('test_api_key');
+        $pubg->getAccount(1234567890);
+        m::close();
     }
 
     public function testGuzzleException()
@@ -148,5 +239,6 @@ class PubgTest extends BaseTest
             ->andThrow($guzzleException);
         $pubg = new Pubg('test_api_key');
         $pubg->getAccount(1234567890);
+        m::close();
     }
 }
