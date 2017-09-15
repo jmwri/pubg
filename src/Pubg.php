@@ -68,7 +68,7 @@ class Pubg
     public function request($method, $uri, $params = [])
     {
         try {
-            $res = $this->client->request($method, $uri, [
+            $response = $this->client->request($method, $uri, [
                 'headers' => [
                     'TRN-Api-Key' => $this->getApiKey()
                 ],
@@ -77,10 +77,21 @@ class Pubg
         } catch (GuzzleException $e) {
             throw new PubgException($e->getMessage(), $e->getCode());
         }
-        if ($res->getStatusCode() != 200) {
-            throw new PubgException($res->getBody(), $res->getStatusCode());
+        if ($response->getHeader('Content-Type')[0] != 'application/json') {
+            throw new BadResponseException('Unable to parse response', $response->getStatusCode());
         }
-        return json_decode((string)$res->getBody(), true);
+        $body = json_decode((string)$response->getBody(), true);
+        if (is_null($body)) {
+            throw new PubgException($response->getBody(), $response->getStatusCode());
+        }
+        if (array_key_exists('error', $body) && $body['error']) {
+            $message = 'An error occurred';
+            if (array_key_exists('message', $body)) {
+                $message = $body['message'];
+            }
+            throw new PubgException($message, $response->getStatusCode());
+        }
+        return $body;
     }
 
     /**
