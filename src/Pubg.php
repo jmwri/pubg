@@ -77,7 +77,7 @@ class Pubg
         } catch (GuzzleException $e) {
             throw new PubgException($e->getMessage(), $e->getCode());
         }
-        if ($response->getHeader('Content-Type')[0] != 'application/json') {
+        if (strpos($response->getHeader('Content-Type')[0], 'application/json') === false) {
             throw new BadResponseException('Unable to parse response', $response->getStatusCode());
         }
         $body = json_decode((string)$response->getBody(), true);
