@@ -25,18 +25,18 @@ You will need to get an API key from [PUBG Tracker](https://pubgtracker.com/site
 # Usage
 ## Get account
 ```php
-$pubg = new \Jmwri\Pubg\Pubg('my-api-key');
-$pubg->getAccount(1234567890); // \Jmwri\Pubg\Output\Account
+$pubg = new \JmWri\Pubg\Pubg('my-api-key');
+$pubg->getAccount(1234567890); // \JmWri\Pubg\Output\Account
 ```
 
 ## Get player stats
 ```php
-$pubg = new \Jmwri\Pubg\Pubg('my-api-key');
-$report = $pubg->getPlayerStats('test_nickname'); // \Jmwri\Pubg\Output\Stats\Report
-$report->getStats('eu', 'solo'); // \Jmwri\Pubg\Output\Stats\Stat[]
-$report->getStats('eu', ['solo', 'duo']); // \Jmwri\Pubg\Output\Stats\Stat[]
-$report->getStats(['eu', 'na'], 'duo'); // \Jmwri\Pubg\Output\Stats\Stat[]
-$report->getMatchHistory(); // \Jmwri\Pubg\Output\Stats\MatchHistory[]
+$pubg = new \JmWri\Pubg\Pubg('my-api-key');
+$report = $pubg->getPlayerStats('test_nickname'); // \JmWri\Pubg\Output\Stats\Report
+$report->getStats('eu', 'solo'); // \JmWri\Pubg\Output\Stats\Stat[]
+$report->getStats('eu', ['solo', 'duo']); // \JmWri\Pubg\Output\Stats\Stat[]
+$report->getStats(['eu', 'na'], 'duo'); // \JmWri\Pubg\Output\Stats\Stat[]
+$report->getMatchHistory(); // \JmWri\Pubg\Output\Stats\MatchHistory[]
 ```
 
 # Support
